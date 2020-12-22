@@ -13,27 +13,25 @@
  * @return {number[]}
  */
 var twoSum = function(nums, target) {
-  let left = 0;
-  let right = nums.length - 1;
+  const map = new Map();
 
-  while (left < right) {
-    const sum = nums[left] + nums[right];
+  for (let i = 0; i < nums.length; i++) {
+    const difference = target - nums[i];
 
-    if (sum > target) {
-      right -= 1;
-    } else if (sum < target) {
-      left += 1;
-    } else {
-      return [left, right];
+    if (map.has(difference)) {
+      return [map.get(difference), i];
     }
+
+    map.set(nums[i], i);
   }
 };
 // @lc code=end
 
-// two pointers: start and end index
-// return [start, end] if nums[start] + nums[end] === target
-// while start !== end
-// if sum is > target
-//   decrement the end pointer
-// if the sum < target
-//   increment the start pointer
+// use a map to hold they key nums[i] with the value i
+// for i from 0 to nums.length
+// calc difference of target and nums[i]
+// if the difference is a key in the map, return [val of difference, i]
+// add the current index to the map
+
+// time: O(n)
+// space: O(n)
