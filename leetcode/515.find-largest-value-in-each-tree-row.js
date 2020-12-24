@@ -20,35 +20,31 @@
  * @return {number[]}
  */
 var largestValues = function(root) {
+  if (!root) return [];
+
   const result = [];
+  let Q = [root];
 
-  const bfs = (root) => {
-    if (!root) return;
+  while (Q.length) {
+    let max = -Infinity;
+    let levelSize = Q.length;
 
-    let Q = [root];
+    for (let i = 0; i < levelSize; i++) {
+      const currentNode = Q.shift();
+      max = Math.max(max, currentNode.val);
 
-    while (Q.length) {
-      let max = -Infinity;
-      let levelSize = Q.length;
-
-      for (let i = 0; i < levelSize; i++) {
-        const currentNode = Q.shift();
-        max = Math.max(max, currentNode.val);
-
-        if (currentNode.left) {
-          Q.push(currentNode.left);
-        }
-
-        if (currentNode.right) {
-          Q.push(currentNode.right);
-        }
+      if (currentNode.left) {
+        Q.push(currentNode.left);
       }
 
-      result.push(max);
+      if (currentNode.right) {
+        Q.push(currentNode.right);
+      }
     }
+
+    result.push(max);
   }
 
-  bfs(root);
   return result;
 };
 // @lc code=end
