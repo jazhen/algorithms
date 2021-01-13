@@ -30,11 +30,11 @@ class MaxHeap {
   }
 
   getMaxPriorityChild(index) {
-    const rightIndex = this.rightChild(index);
-    const leftIndex = this.leftChild(index);
-    const rightVal = this.tree[rightIndex] === undefined ?  -Infinity : this.tree[rightIndex];
-    const leftVal = this.tree[leftIndex] === undefined ? -Infinity : this.tree[leftIndex];
-    return this.comparator(rightVal, leftVal) ? this.rightChild(index) : this.leftChild(index);
+    const rightChildIndex = this.rightChild(index);
+    const leftChildIndex = this.leftChild(index);
+
+    return (this.comparator(this.tree[rightChildIndex], this.tree[leftChildIndex])) ?
+      rightChildIndex : leftChildIndex;
   }
 
   siftDown(index) {
@@ -60,11 +60,11 @@ class MaxHeap {
     [this.tree[index1], this.tree[index2]] = [this.tree[index2], this.tree[index1]];
   }
 
-  rightChild(index) {
+  leftChild(index) {
     return index * 2 + 1;
   }
 
-  leftChild(index) {
+  rightChild(index) {
     return index * 2 + 2;
   }
 }
