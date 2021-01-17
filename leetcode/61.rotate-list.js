@@ -20,6 +20,8 @@
  * @return {ListNode}
  */
 var rotateRight = function(head, k) {
+  if (!head) return head;
+
   let length = 1;
   let lastNode = head;
 
