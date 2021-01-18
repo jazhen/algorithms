@@ -8,7 +8,7 @@
  */
 
 class Heap {
-  constructor(tree = [], comparator = (a, b) => a - b < 0) {
+  constructor(tree = [], comparator = (a, b) => a < b) {
     this.tree = tree;
     this.comparator = comparator;
     this.buildHeap();
