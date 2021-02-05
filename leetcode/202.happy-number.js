@@ -11,12 +11,12 @@
  * @param {number} n
  * @return {boolean}
  */
-const nextSumOfSquaresOfDigits = function(n) {
+function sumOfSquareOfDigits(n) {
   let sum = 0;
-  const stringN = n.toString();
 
-  for (const digit of stringN) {
-    sum += parseInt(digit) ** 2;
+  while (n > 0) {
+    sum += (n % 10) ** 2;
+    n = Math.floor(n / 10);
   }
 
   return sum;
@@ -26,17 +26,14 @@ var isHappy = function(n) {
   let slow = n;
   let fast = n;
 
-  while (true) {
-    slow = nextSumOfSquaresOfDigits(slow);
-    fast = nextSumOfSquaresOfDigits(nextSumOfSquaresOfDigits(fast));
+  slow = sumOfSquareOfDigits(slow);
+  fast = sumOfSquareOfDigits(sumOfSquareOfDigits(fast));
 
-    if (fast === 1) {
-      return true;
-    }
-
-    if (slow === fast) {
-      return false;
-    }
+  while (slow !== fast) {
+    slow = sumOfSquareOfDigits(slow);
+    fast = sumOfSquareOfDigits(sumOfSquareOfDigits(fast));
   }
+
+  return fast === 1 ? true : false;
 };
 // @lc code=end
