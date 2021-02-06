@@ -25,63 +25,33 @@ var reverseBetween = function(head, m, n) {
   let prev = null;
   let pos = 1;
 
+  // increment prev, curr by one node
+  // until curr is the m-th node
   while (pos < m) {
-    prev = curr;
-    curr = curr.next;
+    [prev, curr] = [curr, curr.next];
     pos += 1;
   }
 
-  const nodeBeforeM = prev;
-  const nodeAtN = curr;
+  // save the node before m and the node at n
+  // to connect them after the reversal
+  let nodeBeforeM = prev; // or lastNodeOfPrevGroup
+  let nodeAtN = curr;  // or lastNodeOfCurrGroup
 
+  // reverse the nodes from m to n
   while (pos <= n) {
-    const next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    curr = next;
+    [curr.next, prev, curr] = [prev, curr, curr.next];
     pos += 1;
   }
 
-  if (nodeBeforeM) {
+  // connect the first part of the LL to m
+  if (nodeBeforeM) { // m !== 1
     nodeBeforeM.next = prev;
-  } else {
+  } else { // m === 1
     head = prev;
   }
 
+  // connect n to the last part of the LL
   nodeAtN.next = curr;
 
   return head;
 };
-// @lc code=end
-
-// set current position to 1
-// set current to head
-// set prev to null
-
-// increment prev, curr, and pos (no switching) until reaching pos m
-//  prev becomes curr
-//  curr becomes curr's next
-//  increment pos
-
-// prev now the node before the sublist (before pos m), call this nodeBeforeM
-// curr is now the node at the end of the sublist (at pos n), call this nodeAtN
-// save these as variables to connect the reversed sublist later
-
-// while pos is less than or equal to n
-//  do regular reverse linked list operations (with updating pos)
-//    let local var next to curr's next
-//    set prev to curr
-//    set curr to next
-//    increment pos
-
-// now connect the reversed sublist
-//  if there is a nodeBeforeM (m !== 1)
-//    connect nodeBeforeM's next to prev (connect node before sublist to
-//      the the start of the new sublist, prev)
-//  else set head to prev, the end of the new sublist,
-//    since nodeBeforeM.next must be head
-
-//  always set the node at the end of the sublist, nodeAtN's next, to curr
-//    which is the node after the sublist
-
-// return head
