@@ -7,79 +7,46 @@
  */
 
 // @lc code=start
+function findWord(board, word, m, n, i, j, pos) {
+  // out of bounds
+  if (i < 0 || i >= m || j < 0 || j >= n) return false;
+
+  // letter is already used
+  if (board[i][j] === '') return false;
+
+  // not the correct letter needed; return early
+  if (board[i][j] !== word[pos]) return false;
+
+  // found the word
+  if (pos === word.length - 1) return true;
+
+  // mark the current board position as used
+  const temp = board[i][j];
+  board[i][j] = '';
+
+  // recursively check 4 directional
+  for (const dir of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+    if (findWord(board, word, m, n, i + dir[0], j + dir[1], pos + 1)) {
+      return true;
+    }
+  }
+
+  // backtrack
+  board[i][j] = temp;
+}
 /**
  * @param {character[][]} board
  * @param {string} word
  * @return {boolean}
  */
-class TrieNode {
-  constructor() {
-    this.children = {};
-    this.isTerminal = false;
-  }
-}
-
-class Trie {
-  constructor() {
-    this.root = new TrieNode();
-  }
-
-  insert(word) {
-    let node = this.root;
-
-    for (const letter of word) {
-      if (!node.children[letter]) {
-        node.children[letter] = new TrieNode();
-      }
-
-      node = node.children[letter];
-    }
-
-    node.isTerminal = true;
-  }
-}
-
-function dfs(node, board, visited, i, j) {
-  // out of bounds
-  if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) return false;
-
-  // the node exists
-  if (!node.children[board[i][j]]) return false;
-
-  // not a duplicate
-  if (visited[i * board[0].length + j]) return false;
-
-  // return true if the word is found
-  if (node.children[board[i][j]].isTerminal) return true;
-
-  // build up
-  visited[i * board[0].length + j] = true;
-
-  // visited neighbors
-  if (dfs(node.children[board[i][j]], board, visited, i - 1, j)
-      || dfs(node.children[board[i][j]], board, visited, i + 1, j)
-      || dfs(node.children[board[i][j]], board, visited, i, j - 1)
-      || dfs(node.children[board[i][j]], board, visited, i, j + 1)) {
-        return true;
-      }
-
-  // backtrack
-  visited[i * board[0].length + j] = false;
-
-  // return false is word is not found
-  return false;
-}
-
 var exist = function(board, word) {
-  const trie = new Trie();
-  trie.insert(word);
+  const m = board.length;
+  const n = board[0].length;
+  let pos = 0;
 
-  const visited = new Array(board.length * board[0].length).fill(false);
-
-  for (let i = 0; i < board.length; i++) {
-    for (let j = 0; j < board[0].length; j++) {
-      // start when the letter is the first letter of word
-      if (trie.root.children[board[i][j]] && dfs(trie.root, board, visited, i, j)) {
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (board[i][j] === word[0] && findWord(board, word, m, n, i, j, pos)) {
         return true;
       }
     }
@@ -88,3 +55,4 @@ var exist = function(board, word) {
   return false;
 };
 // @lc code=end
+
