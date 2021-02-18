@@ -20,19 +20,21 @@ function findWord(board, word, m, n, i, j, pos) {
   // found the word
   if (pos === word.length - 1) return true;
 
-  // mark the current board position as used
-  const temp = board[i][j];
-  board[i][j] = '';
-
   // recursively check 4 directional
   for (const dir of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+    // mark the current board position as used
+    const temp = board[i][j];
+    board[i][j] = '';
+
+    // go deeper
     if (findWord(board, word, m, n, i + dir[0], j + dir[1], pos + 1)) {
       return true;
     }
+
+    // backtrack
+    board[i][j] = temp;
   }
 
-  // backtrack
-  board[i][j] = temp;
 }
 /**
  * @param {character[][]} board
