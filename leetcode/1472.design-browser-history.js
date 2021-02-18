@@ -61,4 +61,3 @@ BrowserHistory.prototype.forward = function(steps) {
  * var param_3 = obj.forward(steps)
  */
 // @lc code=end
-
