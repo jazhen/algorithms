@@ -29,4 +29,3 @@ var maxArea = function(height) {
   return max;
 };
 // @lc code=end
-
