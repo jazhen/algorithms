@@ -26,4 +26,3 @@ var twoCitySchedCost = function(costs) {
   return totalCost;
 };
 // @lc code=end
-
