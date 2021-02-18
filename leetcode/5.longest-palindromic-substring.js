@@ -14,25 +14,26 @@
 var longestPalindrome = function(s) {
   const n = s.length;
   const dp = new Array(n).fill(false).map(() => new Array(n).fill(false));
-  let lps = ''
+  let lps = [-1, -1]
 
   // base case for string of length 1
   for (let i = 0; i < n; i++) {
     dp[i][i] = true;
-    lps = s.slice(i, i + 1);
+    lps = [i, i];
   }
 
   // base case for string of length 2
   for (let i = 0; i < n; i++) {
     if (s[i] === s[i + 1]) {
       dp[i][i + 1] = true;
-      lps = s.slice(i, i + 2);
+      lps = [i, i + 1];
     }
   }
 
   // find palindromes from string of length 3+
+  // len: starting index + len characters more
   for (let len = 2; len < n; len++) {
-    const leftBound = n - len + 1;
+    const leftBound = n - len;
 
     for (let i = 0; i < leftBound; i++) {
       let j = i + len;
@@ -40,14 +41,14 @@ var longestPalindrome = function(s) {
       if (dp[i + 1][j - 1] && s[i] === s[j]) {
         dp[i][j] = true;
 
-        if (j - i + 1 > lps.length) {
-          lps = s.slice(i, j + 1);
+        if (j - i + 1 > lps[1] - lps[0] + 1) {
+          lps = [i, j];
         }
       }
     }
   }
 
-  return lps;
+  return s.slice(lps[0], lps[1] + 1);
 };
 
 // time: O(n^2)
