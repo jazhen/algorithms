@@ -25,12 +25,18 @@ var maxPathSum = function(root) {
   function dfs(root, sum) {
     if (!root) return 0;
 
-    let left = Math.max(dfs(root.left), 0);
-    let right = Math.max(dfs(root.right), 0);
+    const left = Math.max(dfs(root.left), 0);
+    const right = Math.max(dfs(root.right), 0);
 
     max = Math.max(max, left + right + root.val);
 
     return Math.max(left, right) + root.val;
+
+    // alternatively:
+
+    // max = Math.max(max, root.val, left + root.val, right + root.val, left + right + root.val);
+
+    // return Math.max(root.val, left + root.val, right + root.val);
   }
 
   dfs(root);
