@@ -12,16 +12,14 @@
  * @return {number}
  */
 var climbStairs = function(n) {
-  const dp = new Array(n + 1).fill(0);
-  dp[0] = 1;
-  dp[1] = 1;
+  const waysToReachStep = new Array(n + 1).fill(0);
+  waysToReachStep[1] = 1;
+  waysToReachStep[2] = 2;
 
-  for (let i = 2; i <= n; i++) {
-    for (let j = 1; j <= 2; j++) {
-      dp[i] += dp[i - j];
-    }
+  for (let i = 3; i <= n; i++) {
+    waysToReachStep[i] += waysToReachStep[i - 1] + waysToReachStep[i - 2];
   }
 
-  return dp[n];
+  return waysToReachStep[n];
 };
 // @lc code=end
