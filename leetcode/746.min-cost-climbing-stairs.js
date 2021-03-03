@@ -12,14 +12,15 @@
  * @return {number}
  */
 var minCostClimbingStairs = function(cost) {
-  const dp = new Array(cost.length + 1).fill(Infinity);
-  dp[0] = cost[0];
-  dp[1] = cost[1];
+  const minCostToReachStep = new Array(cost.length + 1).fill(Infinity);
+  minCostToReachStep[0] = cost[0];
+  minCostToReachStep[1] = cost[1];
 
   for (let i = 2; i <= cost.length; i++) {
-    dp[i] = Math.min(dp[i - 1], dp[i - 2]) + (i === cost.length ? 0 : cost[i]);
+    const currentStepCost = i === cost.length ? 0 : cost[i];
+    minCostToReachStep[i] = Math.min(minCostToReachStep[i - 1], minCostToReachStep[i - 2]) + currentStepCost;
   }
 
-  return dp[cost.length];
+  return minCostToReachStep[cost.length];
 };
 // @lc code=end
