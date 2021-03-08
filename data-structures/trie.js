@@ -18,7 +18,7 @@ class Trie {
 
   /**
    * Insert the given word into the trie.
-   * Time - O(m), where m is the length of the word.
+   * Time - O(word.length)
    * @param {string} word
    */
   insert(word) {
@@ -37,7 +37,7 @@ class Trie {
 
   /**
    * Return whether or not the given word is in the trie.
-   * Time - O(m), where m is the length of the word.
+   * Time - O(word.length)
    * @param {string} word
    * @param {boolean}
    */
