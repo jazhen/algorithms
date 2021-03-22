@@ -19,16 +19,14 @@
  * @param {number[]} nums
  * @return {TreeNode}
  */
-var sortedArrayToBST = function(nums) {
-  if (!nums.length) return null;
+var sortedArrayToBST = function(nums, lb = 0, rb = nums.length - 1) {
+  if (lb > rb) return null;
 
-  const lb = 0;
-  const rb = nums.length - 1;
   const mid = Math.floor(lb + (rb - lb) / 2);
 
   const root = new TreeNode(nums[mid]);
-  root.left = sortedArrayToBST(nums.slice(0, mid));
-  root.right = sortedArrayToBST(nums.slice(mid + 1));
+  root.left = sortedArrayToBST(nums, lb, mid - 1);
+  root.right = sortedArrayToBST(nums, mid + 1, rb);
 
   return root;
 };
