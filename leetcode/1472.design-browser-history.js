@@ -9,10 +9,11 @@
 // @lc code=start
 /**
  * @param {string} homepage
+ * range of this.history must be [1, this.history.length] inclusive
  */
-var BrowserHistory = function(homepage) {
-  this.currentStep = 1;
+ var BrowserHistory = function(homepage) {
   this.history = [homepage];
+  this.step = 1;
 };
 
 /**
@@ -20,8 +21,11 @@ var BrowserHistory = function(homepage) {
  * @return {void}
  */
 BrowserHistory.prototype.visit = function(url) {
-  this.history = this.history.slice(0, this.currentStep);
-  this.currentStep += 1;
+  if (this.step < this.history.length) {
+    this.history = this.history.slice(0, this.step);
+  }
+
+  this.step += 1;
   this.history.push(url);
 };
 
@@ -30,13 +34,13 @@ BrowserHistory.prototype.visit = function(url) {
  * @return {string}
  */
 BrowserHistory.prototype.back = function(steps) {
-  if (this.currentStep - steps - 1 < 0) {
-    this.currentStep = 1;
+  if (this.step - steps < 1) {
+    this.step = 1;
   } else {
-    this.currentStep -= steps;
+    this.step -= steps;
   }
 
-  return this.history[this.currentStep - 1];
+  return this.history[this.step - 1];
 };
 
 /**
@@ -44,15 +48,14 @@ BrowserHistory.prototype.back = function(steps) {
  * @return {string}
  */
 BrowserHistory.prototype.forward = function(steps) {
-  if (this.currentStep + steps > this.history.length) {
-    this.currentStep = this.history.length;
+  if (this.step + steps > this.history.length) {
+    this.step = this.history.length;
   } else {
-    this.currentStep += steps;
+    this.step += steps;
   }
 
-  return this.history[this.currentStep - 1];
+  return this.history[this.step - 1];
 };
-
 /**
  * Your BrowserHistory object will be instantiated and called as such:
  * var obj = new BrowserHistory(homepage)
