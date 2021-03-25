@@ -16,8 +16,8 @@ function isOverlapping(intervalA, intervalB) {
  * @return {number[]}
  */
 function mergeIntervals(intervalA, intervalB) {
-  const start = Math.min(intervalA, intervalB);
-  const end = Math.max(intervalA, intervalB);
+  const start = Math.min(intervalA[0], intervalB[0]);
+  const end = Math.max(intervalA[1], intervalB[1]);
 
   return [start, end];
 }
