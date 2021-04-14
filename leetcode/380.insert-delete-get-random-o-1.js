@@ -11,7 +11,7 @@
  * Initialize your data structure here.
  */
  var RandomizedSet = function() {
-  this.valToIndex = {};
+  this.index = {};
   this.values = [];
 };
 
@@ -21,12 +21,10 @@
  * @return {boolean}
  */
 RandomizedSet.prototype.insert = function(val) {
-  if (this.valToIndex[val] !== undefined) return false;
+  if (this.index[val] !== undefined) return false;
 
   this.values.push(val);
-
-  // value is it's index in this.values
-  this.valToIndex[val] = this.values.length - 1;
+  this.index[val] = this.values.length - 1;
 
   return true;
 };
@@ -37,19 +35,17 @@ RandomizedSet.prototype.insert = function(val) {
  * @return {boolean}
  */
 RandomizedSet.prototype.remove = function(val) {
-  if (this.valToIndex[val] === undefined) return false;
+  if (this.index[val] === undefined) return false;
 
+  const valIndex = this.index[val];
   const lastIndex = this.values.length - 1;
-  const indexOfVal = this.valToIndex[val];
 
-  // swap the value to be removed and the last value
-  [this.values[indexOfVal], this.values[lastIndex]] = [this.values[lastIndex], this.values[indexOfVal]];
+  this.index[this.values[lastIndex]] = valIndex;
+  delete this.index[val];
 
-  // change the index of the old last value in the hashmap
-  this.valToIndex[this.values[lastIndex]] = this.valToIndex[val];
+  [this.values[valIndex], this.values[lastIndex]] = [this.values[lastIndex], this.values[valIndex]];
 
   this.values.pop();
-  delete this.valToIndex[val];
 
   return true;
 };
@@ -59,7 +55,7 @@ RandomizedSet.prototype.remove = function(val) {
  * @return {number}
  */
 RandomizedSet.prototype.getRandom = function() {
-  const randomIndex = Math.floor(this.values.length * Math.random());
+  const randomIndex = Math.floor(Math.random() * this.values.length);
 
   return this.values[randomIndex];
 };
