@@ -1,9 +1,9 @@
-// https://leetcode.com/problems/palindrome-linked-list/
-
 /*
  * @lc app=leetcode id=234 lang=javascript
  *
  * [234] Palindrome Linked List
+ *
+ * https://leetcode.com/problems/palindrome-linked-list/
  */
 
 // @lc code=start
@@ -17,9 +17,11 @@
 /**
  * @param {ListNode} head
  * @return {boolean}
+ *
+ * time: O(# nodes)
+ * space: O(1)
  */
-var isPalindrome = function(head) {
-  // get the middle node
+ var isPalindrome = function(head) {
   let slow = head;
   let fast = head;
 
@@ -28,28 +30,27 @@ var isPalindrome = function(head) {
     fast = fast.next.next;
   }
 
-  // reverse the linked list, starting at the middle node
-  let curr = slow;
-  let prev = null;
+  let firstHalf = head;
+  let secondHalf = reverse(slow);
 
-  while (curr) {
-    let next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    curr = next;
-  }
+  while (firstHalf && secondHalf) {
+    if (firstHalf.val !== secondHalf.val) return false;
 
-  // compare vals starting at the head and the middle node
-  // incrementing each by 1 step
-  while (prev) {
-    if (head.val !== prev.val) {
-      return false;
-    }
-
-    head = head.next;
-    prev = prev.next;
+    firstHalf = firstHalf.next;
+    secondHalf = secondHalf.next;
   }
 
   return true;
 };
+
+function reverse(head) {
+  let curr = head;
+  let prev = null;
+
+  while (curr) {
+    [curr.next, prev, curr] = [prev, curr, curr.next];
+  }
+
+  return prev;
+}
 // @lc code=end
