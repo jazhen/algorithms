@@ -14,29 +14,26 @@
  * time: O(n logn), where n = intervals.length
  * space: O(1)
  */
- var eraseOverlapIntervals = function(intervals) {
-  intervals.sort((a, b) => a[0] - b[0]);
+var eraseOverlapIntervals = function(intervals) {
+  intervals.sort((a, b) => a[1] - b[1]);
 
-  let i = 0;
-  let j = 1;
   let ans = 0;
+  let curr = intervals[0];
 
-  while (j < intervals.length) {
-    if (isOverlapping(intervals[i], intervals[j])) {
+  for (let i = 1; i < intervals.length; i++) {
+    if (isOverlapping(curr, intervals[i])) {
       ans++;
     } else {
-      i = j;
+      curr = intervals[i];
     }
-
-    j++;
   }
 
   return ans;
 };
 
 function isOverlapping(a, b) {
-  let start = Math.max(a[0], b[0]);
-  let end = Math.min(a[1], b[1]);
+  const start = Math.max(a[0], b[0]);
+  const end = Math.min(a[1], b[1]);
 
   return end - start > 0;
 }
