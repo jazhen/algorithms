@@ -17,20 +17,14 @@
  */
 var longestOnes = function(nums, k) {
   let maxConsectutiveOnes = 0;
-  let onesCount = 0;
+  let countOfOnes = 0;
 
   for (let start = 0, end = 0; end < nums.length; end++) {
-    if (nums[end] === 1) {
-      onesCount += 1;
-    }
+    countOfOnes += nums[end];
 
-    /** zeroesCount = end - start + 1 - onesCount  */
-    if (end - start + 1 - onesCount > k) {
-      if (nums[start] === 1) {
-        onesCount -= 1;
-      }
-
-      start++;
+    if (end - start + 1 - countOfOnes > k) {
+      countOfOnes -= nums[start];
+      start += 1;
     }
 
     maxConsectutiveOnes = Math.max(maxConsectutiveOnes, end - start + 1);
