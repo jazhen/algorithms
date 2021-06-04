@@ -4,14 +4,14 @@ class Heap {
    * @example
    * const minHeap1 = new Heap([75, 12, 3, 11]);
    * @example
-   * const maxHeap = new Heap([], (a, b) => a > b);
+   * const maxHeap = new Heap([], (a, b) => a - b);
    * @example
    * const frequencies = [{num: 5, freq: 8}, {num: 30, freq: 1}, {num: 2, freq: 3}];
-   * const minHeap2 = new Heap(frequencies, (a, b) => a && b && a.val < b.val);
+   * const minHeap2 = new Heap(frequencies, (a, b) => a && b && a.val - b.val);
    * @param {number[]} tree - The initial elements of the heap.
    * @param {function} comparator - The function that determines the heap structure.
    */
-  constructor(tree = [], comparator = (a, b) => a < b) {
+  constructor(tree = [], comparator = (a, b) => a - b) {
     this.tree = tree;
     this.comparator = comparator;
     this.buildHeap();
@@ -90,7 +90,7 @@ class Heap {
    * Time - O(log n)
    * @param {number} val
    */
-  insert(val) {
+  push(val) {
     this.tree.push(val);
     this.siftUp(this.size() - 1);
   }
@@ -100,12 +100,13 @@ class Heap {
    * Time - O(log n)
    * @return {number}
    */
-  extract() {
+  pop() {
     if (!this.size()) return null;
 
     this.swap(0, this.size() - 1);
     const root = this.tree.pop();
     this.siftDown(0);
+
     return root;
   }
 
@@ -115,12 +116,25 @@ class Heap {
    * @param {number} index
    */
   siftUp(index) {
-    if (index === 0) return;
-
     let parentIndex = this.getParentIndex(index);
-    if (this.comparator(this.tree[index], this.tree[parentIndex])) {
+
+    if (this.comparator(this.tree[index], this.tree[parentIndex]) < 0) {
       this.swap(index, parentIndex);
       this.siftUp(parentIndex);
+    }
+  }
+
+  /**
+   * Maintain heap structure from the given index to the last node.
+   * Time - O(log n)
+   * @param {number} index
+   */
+  siftDown(index) {
+    const childIndex = this.getMaxPriorityChildIndex(index);
+
+    if (this.comparator(this.tree[childIndex], this.tree[index]) < 0) {
+        this.swap(childIndex, index);
+        this.siftDown(childIndex);
     }
   }
 
@@ -131,24 +145,11 @@ class Heap {
    * @param {number} index
    * @return {number}
    */
-  maxPriorityChildIndex(index) {
+   getMaxPriorityChildIndex(index) {
     const rightChildIndex = this.getRightChildIndex(index);
     const leftChildIndex = this.getLeftChildIndex(index);
 
-    return (this.comparator(this.tree[rightChildIndex], this.tree[leftChildIndex])) ?
+    return (this.comparator(this.tree[rightChildIndex], this.tree[leftChildIndex]) < 0) ?
       rightChildIndex : leftChildIndex;
-  }
-
-  /**
-   * Maintain heap structure from the given index to the last node.
-   * Time - O(log n)
-   * @param {number} index
-   */
-  siftDown(index) {
-    const childIndex = this.maxPriorityChildIndex(index);
-    if (this.comparator(this.tree[childIndex], this.tree[index])) {
-        this.swap(childIndex, index);
-        this.siftDown(childIndex);
-    }
   }
 }
