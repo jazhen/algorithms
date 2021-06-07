@@ -16,18 +16,19 @@
  * space: O(1)
  */
 var checkSubarraySum = function(nums, k) {
-  const prefix = new Map();
-  prefix.set(0, -1);
+  const seen = {};
   let sum = 0;
 
-  for (let i = 0; i < nums.length; i++) {
-    sum += nums[i];
+  for (const [i, n] of nums.entries()) {
+    sum += n;
     sum %= k;
 
-    if (prefix.has(sum)) {
-      if (i - prefix.get(sum) > 1) return true;
+    if (sum === 0 && i >= 1) return true;
+
+    if (sum in seen) {
+      if (i - seen[sum] >= 2) return true;
     } else {
-      prefix.set(sum, i);
+      seen[sum] = i;
     }
   }
 
