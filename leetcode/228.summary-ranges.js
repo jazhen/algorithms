@@ -15,33 +15,22 @@
  * space: O(n)
  */
 var summaryRanges = function(nums) {
-  if (nums.length === 0) return [];
+  const ranges = [];
+  let start = 0;
 
-  let start = nums[0];
-  let end = nums[0];
-  const ans = [];
+  for (let end = 0; end < nums.length; end++) {
+    if (nums[end + 1] === nums[end] + 1) continue;
 
-  for (let i = 1; i < nums.length; i++) {
-    if (nums[i] === nums[i - 1] + 1) {
-      end = nums[i];
+    if (start === end) {
+      ranges.push(`${nums[start]}`);
     } else {
-      if (start === end) {
-        ans.push(`${start}`);
-      } else {
-        ans.push(`${start}->${end}`);
-      }
-      start = nums[i];
-      end = nums[i];
+      ranges.push(`${nums[start]}->${nums[end]}`);
     }
+
+    start = end + 1;
   }
 
-  if (start === end) {
-    ans.push(`${start}`);
-  } else {
-    ans.push(`${start}->${end}`);
-  }
-
-  return ans;
+  return ranges;
 };
 // @lc code=end
 
