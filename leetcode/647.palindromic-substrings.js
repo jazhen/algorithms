@@ -11,32 +11,39 @@
  * @param {string} s
  * @return {number}
  *
- * time: O(n^3)
- * space: O(n)
+ * time: O(n^2), n = s.length
+ * space: O(n^2)
  */
-var countSubstrings = function(s) {
+var countSubstrings = function (s) {
   const n = s.length;
-  let numPalindromicSubsequences = 0;
+  const dp = new Array(n).fill(null).map(() => new Array(n).fill(false));
+  let numPalindromicSubstrings = 0;
 
   for (let i = 0; i < n; i++) {
-    for (let j = i; j < n; j++) {
-      const substring = s.slice(i, j + 1);
+    dp[i][i] = true;
+    numPalindromicSubstrings += 1;
+  }
 
-      if (isPalindrome(substring)) {
-        numPalindromicSubsequences += 1;
+  for (let i = 1; i < n; i++) {
+    if (s[i - 1] === s[i]) {
+      dp[i - 1][i] = true;
+      numPalindromicSubstrings += 1;
+    }
+  }
+
+  for (let len = 2; len < n; len++) {
+    const rightBound = n - len;
+
+    for (let i = 0; i < rightBound; i++) {
+      const j = i + len;
+
+      if (s[i] === s[j] && dp[i + 1][j - 1]) {
+        dp[i][j] = true;
+        numPalindromicSubstrings += 1;
       }
     }
   }
 
-  return numPalindromicSubsequences;
+  return numPalindromicSubstrings;
 };
-
-function getAlphabetIndex(char) {
-  return char.charCodeAt() - 'a'.charCodeAt();
-}
-
-function isPalindrome(str) {
-  return str === str.split('').reverse().join('');
-}
 // @lc code=end
-
